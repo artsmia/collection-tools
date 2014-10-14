@@ -4,7 +4,7 @@ term=$1
 
 if grep -v '\.' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
   # $term is an existing object's id
-  id=$term
+  ids=$term
 else
   # ask sphinx
   result=$(curl --silent "https://collections.artsmia.org/search_controller.php" -d 'page=search' --data-urlencode "query=$term");
@@ -13,8 +13,13 @@ else
     exit 1
   else
     id=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
+    ids=$(jq -r '.message | .[]' <<<$result | while read line; do cut -d'_' -f1; done)
+    # (^) `while read line; do cut …` trims the first line, why? (v) add it back…
+    ids+=" $id"
   fi
 fi
 
->&2 echo $id
-jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+for id in $ids; do
+  >&2 echo $id
+  jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+done
