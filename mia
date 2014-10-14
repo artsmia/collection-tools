@@ -1,36 +1,33 @@
 #!/usr/local/bin/bash
 
-term=$1
-
-if [[ -z $term || ! -d ~/tmp/collection ]]; then
-  echo "USAGE: mia <term>"
-  echo "  term can be an object id or something else."
-  echo "  if it's something else, you need an internet connection to run a search against our collections server."
+if [[ -z "$@" || ! -d ~/tmp/collection ]]; then
+  echo "USAGE: mia <terms>"
+  echo "  terms can be object ids or other things."
+  echo "  if other, you need an internet connection to run a search against our collections server."
   echo
   exit 1
 fi
 
-if grep -v '\.' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
-  # $term is an existing object's id
-  ids=$term
-else
-  # ask sphinx
-  result=$(curl --silent "https://collections.artsmia.org/search_controller.php" -d 'page=search' --data-urlencode "query=$term");
-  if egrep -q "no result" <<<$result; then
-    echo $term -- no match;
-    exit 1
+for term in "$@"; do
+  if grep -v '\.' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
+    # $term is an existing object's id
+    ids=$term
   else
-    id=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
-    ids=$(jq -r '.message | .[]' <<<$result | while read line; do cut -d'_' -f1; done)
-    # (^) `while read line; do cut …` trims the first line, why? (v) add it back…
-    ids+=" $id"
+    # ask sphinx
+    result=$(curl --silent "https://collections.artsmia.org/search_controller.php" -d 'page=search' --data-urlencode "query=$term");
+    if egrep -q "no result" <<<$result; then
+      >&2 echo $term -- no match;
+      continue
+    else
+      id=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
+      ids=$(jq -r '.message | .[]' <<<$result | while read line; do cut -d'_' -f1; done)
+      # (^) `while read line; do cut …` trims the first line, why? (v) add it back…
+      ids+=" $id"
+    fi
   fi
-fi
 
-for id in $ids; do
-  >&2 echo $id
-  jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+  for id in $ids; do
+    >&2 echo $id
+    jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+  done
 done
-
-# TODO
-# "$@" for multiple terms?
