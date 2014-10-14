@@ -19,10 +19,7 @@ for term in "$@"; do
       >&2 echo $term -- no match;
       continue
     else
-      id=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
-      ids=$(jq -r '.message | .[]' <<<$result | while read line; do cut -d'_' -f1; done)
-      # (^) `while read line; do cut …` trims the first line, why? (v) add it back…
-      ids+=" $id"
+      ids=$(jq -r '"skipped. why?", (.message | .[])' <<<$result | while read line; do cut -d'_' -f1; done)
     fi
   fi
 
