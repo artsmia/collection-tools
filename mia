@@ -1,0 +1,13 @@
+#!/usr/local/bin/bash
+
+term=$1
+result=$(curl --silent "https://collections.artsmia.org/search_controller.php" -d 'page=search' --data-urlencode "query=$term");
+
+if egrep -q "no result" <<<$result; then
+  echo $term -- no match;
+else
+  id=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
+  ids=$(jq -r '.message[0]' <<<$result | cut -d'_' -f1);
+  >&2 echo $id
+  jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+fi;

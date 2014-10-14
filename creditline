@@ -1,0 +1,3 @@
+#!/usr/local/bin/bash
+
+mia $1 | jq -r '.artist, .title, .creditline, .accession_number, .image_copyright'
