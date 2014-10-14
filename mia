@@ -2,6 +2,14 @@
 
 term=$1
 
+if [[ -z $term || ! -d ~/tmp/collection ]]; then
+  echo "USAGE: mia <term>"
+  echo "  term can be an object id or something else."
+  echo "  if it's something else, you need an internet connection to run a search against our collections server."
+  echo
+  exit 1
+fi
+
 if grep -v '\.' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
   # $term is an existing object's id
   ids=$term
@@ -23,3 +31,6 @@ for id in $ids; do
   >&2 echo $id
   jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
 done
+
+# TODO
+# "$@" for multiple terms?
