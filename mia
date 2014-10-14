@@ -27,4 +27,5 @@ for term in "$@"; do
     >&2 echo $id
     jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
   done
+  >&2 echo
 done
