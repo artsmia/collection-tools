@@ -4,6 +4,7 @@ if [[ -z "$@" || ! -d ~/tmp/collection ]]; then
   echo "USAGE: mia <terms>"
   echo "  terms can be object ids or other things."
   echo "  if other, you need an internet connection to run a search against our collections server."
+  echo "  quote terms with more than one word: \`mia 'three bathers 1907'\`"
   echo
   exit 1
 fi

@@ -41,6 +41,9 @@ through our sphinx server.
 … # possibly subsequent results
 ```
 
+Terms are split by spaces. To search for more than one word, surround
+them with quotes: `mia 'three bathers 1907'`.
+
 # `creditline`
 
 ```sh
