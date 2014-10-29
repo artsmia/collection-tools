@@ -76,10 +76,10 @@ other tools that take JSON input:
 "Marine","Lyonel Feininger","Not on View","invalid","",""
 ```
 
-# `creditline`
+# `tombstone`
 
 ```sh
-> creditline monet
+> tombstone monet
 1413 # (id to stderr)
 Claude Monet
 The Japanese Bridge
