@@ -45,6 +45,37 @@ through our sphinx server.
 Terms are split by spaces. To search for more than one word, surround
 them with quotes: `mia 'three bathers 1907'`.
 
+The results are valid JSON on `stdout`, so they can be piped to `jq` and
+other tools that take JSON input:
+
+```csv
+> mia lyonel | jq -s '.' | json2csv -f title,artist,room,image,image_width,image_height
+1425
+114710
+1268
+7871
+9770
+23147
+42135
+42265
+43418
+43591
+53588
+
+"title","artist","room","image","image_width","image_height"
+"Gross-Kromsdorf I","Lyonel Feininger","G367","valid",4840,6066
+"Blue Coast","Lyonel Feininger","Not on View","valid",8933,5279
+"Hopfgarten","Lyonel Feininger","Not on View","valid",6532,5039
+"Promenaders (Spaziergänger)","Lyonel Feininger","Not on View","valid",6465,8026
+"Harbor","Lyonel Feininger","Not on View","valid",4789,3108
+"Figure Study","Lyonel Feininger","Not on View","valid",3499,4008
+"Lehnstedt","Lyonel Feininger","Not on View","invalid","",""
+"Evening Greetings","Lyonel Feininger","Not on View","invalid","",""
+"Marine","Lyonel Feininger","Not on View","invalid","",""
+"Marine 1","Lyonel Feininger","Not on View","invalid","",""
+"Marine","Lyonel Feininger","Not on View","invalid","",""
+```
+
 # `creditline`
 
 ```sh
