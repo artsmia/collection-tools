@@ -1,6 +1,7 @@
-(For now, this relies on having [our collection
-data](https://github.com/artsmia/collection) cloned to your local
-machine at `~/tmp/collection`.)
+This needs [our collection
+data](https://github.com/artsmia/collection) to be cloned to your local
+machine: `git clone --depth=1 https://github.com/artsmia/collection.git`.
+Set the environment variable `MIA_COLLECTION` to point at that directory.
 
 # `mia`
 

@@ -1,6 +1,8 @@
 #!/usr/local/bin/bash
 
-if [[ -z "$@" || ! -d ~/tmp/collection ]]; then
+[[ ! -z $MIA_COLLECTION ]] && collection=$MIA_COLLECTION || collection=~/tmp/collection
+
+if [[ -z "$@" || ! -d "$collection" ]]; then
   echo "USAGE: mia <terms>"
   echo "  terms can be object ids or other things."
   echo "  if other, you need an internet connection to run a search against our collections server."
@@ -10,7 +12,7 @@ if [[ -z "$@" || ! -d ~/tmp/collection ]]; then
 fi
 
 for term in "$@"; do
-  if egrep '^[0-9]+$' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
+  if egrep '^[0-9]+$' <<<$term > /dev/null && [[ -f $collection/objects/$((term/1000))/$term.json ]]; then
     # $term is an existing object's id
     ids=$term
   else
@@ -26,7 +28,7 @@ for term in "$@"; do
 
   for id in $ids; do
     >&2 echo $id
-    jq '.' < ~/tmp/collection/objects/$((id/1000))/$id.json
+    jq '.' < $collection/objects/$((id/1000))/$id.json
   done
   >&2 echo
 done
