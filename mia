@@ -9,7 +9,7 @@ if [[ -z "$@" || ! -d ~/tmp/collection ]]; then
 fi
 
 for term in "$@"; do
-  if grep -v '\.' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
+  if egrep '^[0-9]+$' <<<$term > /dev/null && [[ -f ~/tmp/collection/objects/$((term/1000))/$term.json ]]; then
     # $term is an existing object's id
     ids=$term
   else
