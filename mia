@@ -12,7 +12,8 @@ if [[ -z "$@" || ! -d "$collection" ]]; then
 fi
 
 for term in "$@"; do
-  if egrep '^[0-9]+$' <<<$term > /dev/null && [[ -f $collection/objects/$((term/1000))/$term.json ]]; then
+  if egrep '^[0-9]+$' <<<$term > /dev/null && \
+    [[ "$$(ls $collection*/objects/$((term/1000))/$term.json | wc -l)" != "0"  ]]; then
     # $term is an existing object's id
     ids=$term
   else
@@ -27,8 +28,9 @@ for term in "$@"; do
   fi
 
   for id in $ids; do
-    >&2 echo $id
-    jq '.' < $collection/objects/$((id/1000))/$id.json
+    file=$collection*/objects/$((id/1000))/$id.json
+    >&2 echo $id -- $file
+    jq '.' < $file
   done
   >&2 echo
 done

@@ -3,6 +3,11 @@ data](https://github.com/artsmia/collection) to be cloned to your local
 machine: `git clone --depth=1 https://github.com/artsmia/collection.git`.
 Set the environment variable `MIA_COLLECTION` to point at that directory.
 
+(If you have access to our secret internal private collection repo,
+cloned to `<the same path>-private`, this will search that too. Though
+searching those is `object id` only because those objects are deemed
+unfit for public consumption they aren't indexed by the sphinx server.)
+
 # `mia`
 
 matches an object id if the given term is numeric and there's a matching object
