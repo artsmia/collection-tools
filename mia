@@ -30,7 +30,7 @@ for term in "$@"; do
   for id in $ids; do
     file=$collection*/objects/$((id/1000))/$id.json
     >&2 echo $id -- $file
-    jq '.' < $file
+    jq '.' < $file | sed 's|http://api.artsmia.org/objects/||'
   done
   >&2 echo
 done
