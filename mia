@@ -17,13 +17,13 @@ for term in "$@"; do
     # $term is an existing object's id
     ids=$term
   else
-    # ask sphinx
-    result=$(curl --silent "https://collections.artsmia.org/search_controller.php" -d 'page=search' --data-urlencode "query=$term");
-    if egrep -q "no result" <<<$result; then
+    # ask ES
+    result=$(curl --silent "http://search.staging.artsmia.org/$term");
+    if egrep -q '"total": 0,' <<<$result; then
       >&2 echo $term -- no match;
       continue
     else
-      ids=$(jq -r '"skipped. why?", (.message | .[])' <<<$result | while read line; do cut -d'_' -f1; done)
+      ids=$(jq -r '.hits.hits[]._id' <<<$result)
     fi
   fi
 
