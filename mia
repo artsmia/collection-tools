@@ -18,7 +18,8 @@ for term in "$@"; do
     ids=$term
   else
     # ask ES
-    result=$(curl --silent "http://search.staging.artsmia.org/$term");
+    escapedTerm=$(echo $term | sed 's/ /%20/g')
+    result=$(curl --silent "http://search.staging.artsmia.org/$escapedTerm");
     if egrep -q '"total": 0,' <<<$result; then
       >&2 echo $term -- no match;
       continue
