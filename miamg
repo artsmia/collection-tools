@@ -1,0 +1,13 @@
+#!/usr/local/bin/bash
+
+for id in "$@"; do
+  json=$(~/bin/mia $id);
+  width=$(jq -r '.image_width' <<<$json);
+  height=$(jq -r '.image_height' <<<$json);
+  let "maxDimension = width > height ? width : height";
+
+  url="api.artsmia.org/images/$id/$maxDimension/large.jpg"
+  echo $url
+  curl -o $id.jpg $url
+done
+
