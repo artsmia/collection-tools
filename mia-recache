@@ -1,0 +1,23 @@
+#!/usr/local/bin/bash
+
+for id in "$@"; do
+  if true 2>/dev/null; then
+    # TODO: remove files from internal and external API cache
+    # echo ssh $(apiServer) \"find \`image_location $id\` -type f\";
+    file=$(ls $id.{jpg,tif} 2>/dev/null | head -1)
+    if [[ -f $id ]]; then
+      file=$id
+      id=$(exiftool -TransmissionReference $file | cut -d':' -f2 | sed 's/ //')
+    fi
+    [[ -f $file ]] || miamg $id > /dev/null;
+    echo $file -- $id;
+    for size in 400 800; do
+      resized=$id-$size.jpg
+      vipsthumbnail --size=$size -o $resized $file > /dev/null
+      s3cmd put -P --cf-invalidate $resized s3://object-images/$size/$id.jpg > /dev/null
+    done
+    echo here we would remove the tiled image -- ssh dx \"[[ -f /data/tiles/$id/metadata.json ]] \&\& rm -rf /data/tiles/$id\"
+    rm $id-*.jpg;
+  fi
+done
+
