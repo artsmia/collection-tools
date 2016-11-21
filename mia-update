@@ -1,0 +1,5 @@
+#!/usr/local/bin/bash
+
+for id in "$@"; do
+  echo "update object $id" | nc -v -v 10.1.1.112 9999
+done

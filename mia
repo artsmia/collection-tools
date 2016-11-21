@@ -19,7 +19,7 @@ for term in "$@"; do
   else
     # ask ES
     escapedTerm=$(echo $term | sed 's/ /%20/g')
-    result=$(curl --silent "http://search.staging.artsmia.org/$escapedTerm");
+    result=$(curl --silent "http://search.artsmia.org/$escapedTerm");
     if egrep -q '"total": 0,' <<<$result; then
       >&2 echo $term -- no match;
       continue

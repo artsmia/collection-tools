@@ -6,7 +6,7 @@ for id in "$@"; do
   height=$(jq -r '.image_height' <<<$json);
   let "maxDimension = width > height ? width : height";
 
-  url="api.artsmia.org/images/$id/$maxDimension/large.jpg"
+  url="api.artsmia.org/images/$id/$maxDimension/full.jpg"
   echo $url
   curl -o $id.jpg $url
 done
