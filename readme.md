@@ -111,3 +111,13 @@ Gift of Anne Pierce Rogers in memory of John DeCoster Rogers
 …
 ```
 
+# `miamg`
+
+Download an image at full res from the API (internal only)
+
+# `mia-recache`
+
+Does the gruntwork of replacing an image in multiple cache locations. Work
+in progress. So far this replaces thumbnail images (stored on S3). Needs
+to also handle replacing the image on our internal and external API
+servers and the full-size tiled version of an image.
