@@ -3,6 +3,7 @@
 [[ ! -z $MIA_COLLECTION ]] && collection=$MIA_COLLECTION || collection=~/tmp/collection
 [[ ! -z $MIA_SEARCH_TOKEN ]] && accessToken=$MIA_SEARCH_TOKEN
 
+# data validation
 if [[ -z "$@" || ! -d "$collection" ]]; then
   echo "USAGE: mia <terms>"
   echo "  terms can be object ids or other things."
@@ -32,7 +33,7 @@ for term in "$@"; do
   fi
 
   for id in $ids; do
-    file=$collection*/objects/$((id/1000))/$id.json
+    file=$collection/objects/$((id/1000))/$id.json
     >&2 echo $id -- $file
     jq '.' < $file | sed 's|http://api.artsmia.org/objects/||'
   done
